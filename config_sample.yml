@@ -1,0 +1,20 @@
+proxy:
+  - https://xxxxx
+  - https://yyyyy
+
+src:
+  - '香港'
+  - '美国'
+  - '日本'
+  - '台湾'
+  - '澳洲'
+
+dst:
+  - '上海'
+  - '北京'
+  - '广州'
+
+rule:
+  - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Hijacking.yaml
+  - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/StreamingMedia/Streaming.yaml
+  - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/ChinaIP.yaml
