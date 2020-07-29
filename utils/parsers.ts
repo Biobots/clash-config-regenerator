@@ -112,7 +112,6 @@ export function fillStrategy(input:Array<Proxy.BaseProxyGroup>) {
 			Config.filteredProxies.set(i.group, proxies)
 		}
 	})
-	console.log(Config.filteredProxies)
 }
 
 export function fillGroup(input:Array<Proxy.BaseProxyGroup>) {

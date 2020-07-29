@@ -15,6 +15,20 @@ dst:
   - '广州'
 
 rule:
-  - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Hijacking.yaml
-  - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/StreamingMedia/Streaming.yaml
-  - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/ChinaIP.yaml
+  - 
+    name: test1
+    url: https://github.com/Biobots/personalClashRule/raw/master/Workspace.yaml
+  - 
+    name: test2
+    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Hijacking.yaml
+
+groups:
+  -
+    name: test1
+    group: 上海
+    type: select
+
+  -
+    name: test2
+    group: 广州
+    type: select
