@@ -10,13 +10,11 @@ export class PayloadRule {
 }
 
 export class SingleRule {
-	type:string
-	content:string
+	payload:PayloadRule
 	strategy:string
 
-    constructor(type:string, content:string, strategy:string) {
-		this.type = type;
-		this.content = content;
+    constructor(payload:PayloadRule, strategy:string) {
+		this.payload = payload
 		this.strategy = strategy;
 	}
 }

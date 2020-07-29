@@ -11,6 +11,36 @@ export enum ProxyType {
 	ShadowsocksR
 }
 
+export enum ProxyGroupType {
+	Base,
+	Select
+}
+
+export class BaseProxyGroup {
+	name:string
+	type:ProxyGroupType
+	group:string
+	proxies:Array<BaseProxy>
+
+	raw:any
+
+	constructor(raw:any) {
+		this.raw = raw;
+		this.name = raw.name;
+		this.group = raw.group;
+		this.type = ProxyGroupType.Base;
+		this.proxies = [];
+	}
+}
+
+export class SelectProxyGroup extends BaseProxyGroup {
+
+	constructor(raw:any) {
+		super(raw);
+		this.type = ProxyGroupType.Select;
+	}
+}
+
 export class BaseProxy {
 	name:string
 	type:ProxyType
