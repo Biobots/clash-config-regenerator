@@ -7,6 +7,12 @@ export class Config {
 	static DstLoc:Array<string> = []
 	static SrcLoc:Array<string> = []
 
+	static OutConfig:any = {
+		proxies:[],
+		proxyGroups:[],
+		rules:[]
+	}
+
 	public static load(path:string) {
 		let configfile:any = yaml.safeLoad(fs.readFileSync(path, 'utf-8'));
 		Config.proxyurl = configfile.proxy;

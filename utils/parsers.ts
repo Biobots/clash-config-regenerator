@@ -31,7 +31,7 @@ export function parseProxies(proxies:Array<any>): Array<Proxy.BaseProxy> {
 	return rst;
 }
 
-export function parseSingleRule(payload:string):  Rule.SingleRule {
+export function parseSingleRule(payload:string): Rule.SingleRule {
 	let str:Array<string> = payload.split(',');
 	return new Rule.SingleRule(str[0], str[1], str[2]);
 }
@@ -50,4 +50,8 @@ export function adaptRule(payload:Rule.PayloadRule, strategy:string): Rule.Singl
 
 export function adaptRules(payload:Array<Rule.PayloadRule>, strategy:string): Array<Rule.SingleRule> {
 	return payload.map(p => new Rule.SingleRule(p.type, p.content, strategy));
+}
+
+export function buildProxyStr(input:Array<Proxy.BaseProxy>) {
+    
 }
