@@ -13,23 +13,28 @@ export enum ProxyType {
 
 export enum ProxyGroupType {
 	Base,
-	Select
+	Select,
+	UrlTest
 }
 
 export class BaseProxyGroup {
 	name:string
 	type:ProxyGroupType
-	group:string
+	keywords:string
 	proxies:Array<BaseProxy>
+	direct:boolean
+	reject:boolean
 
 	raw:any
 
 	constructor(raw:any) {
 		this.raw = raw;
 		this.name = raw.name;
-		this.group = raw.group;
+		this.keywords = raw.keywords;
 		this.type = ProxyGroupType.Base;
 		this.proxies = [];
+		this.direct = typeof(raw.direct)=='undefined'?false:raw.direct;
+		this.reject = typeof(raw.reject)=='undefined'?false:raw.reject;
 	}
 }
 
@@ -38,6 +43,18 @@ export class SelectProxyGroup extends BaseProxyGroup {
 	constructor(raw:any) {
 		super(raw);
 		this.type = ProxyGroupType.Select;
+	}
+}
+
+export class UrlTestProxyGroup extends BaseProxyGroup {
+	url:string
+	interval:number
+
+	constructor(raw:any) {
+		super(raw);
+		this.type = ProxyGroupType.UrlTest;
+		this.url = raw.url;
+		this.interval = raw.interval;
 	}
 }
 

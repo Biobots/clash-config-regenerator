@@ -1,20 +1,20 @@
-proxy:
+proxy: #clash subscriptions
   - https://xxxxx
   - https://yyyyy
 
-src:
+src: #useless
   - '香港'
   - '美国'
   - '日本'
   - '台湾'
   - '澳洲'
 
-dst:
+dst: #useless
   - '上海'
   - '北京'
   - '广州'
 
-rule:
+rule: #rule providers
   - 
     name: test1
     url: https://github.com/Biobots/personalClashRule/raw/master/Workspace.yaml
@@ -22,13 +22,17 @@ rule:
     name: test2
     url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Hijacking.yaml
 
-groups:
-  -
-    name: test1
-    group: 上海
+groups: #proxy groups
+  - name: test1
+    keywords: 香港 上海
     type: select
+    direct: true
+    reject: true
 
-  -
-    name: test2
-    group: 广州
-    type: select
+  - name: test2
+    keywords: 香港 高级
+    type: urltest
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    direct: false
+    reject: true

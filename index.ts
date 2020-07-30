@@ -2,9 +2,6 @@ import express = require('express');
 import yaml = require('js-yaml');
 import fs = require('fs');
 import mime = require('mime');
-import Axios, { AxiosResponse } from 'axios';
-import * as Proxy from './utils/proxy'
-import * as Rule from './utils/rule'
 import {Config} from './utils/configs'
 import * as Parser from './utils/parsers'
 
@@ -18,15 +15,9 @@ app.get('/', function(req:express.Request, res:express.Response) {
 		])
 		.finally(() => 
 		{
-			//Config.rules = Config.rules.concat(Parser.adaptRules(Config.rulepayloads.get('test1'), 'hk'));
-			Config.rulepayloads.forEach((rules, name) => {
-				if (Config.Groups.findIndex(g => g.name===name)>-1)
-				{
-					Config.rules = Config.rules.concat(Parser.adaptRules(rules, name))
-				}
-			});
-			Parser.testFilterProxies(Config.proxies);
-			Parser.fillStrategy(Config.Groups);
+			Parser.processRule();
+			Parser.filterProxies(Config.proxies);
+			Parser.processGroup(Config.Groups);
 			Parser.fillGroup(Config.Groups);
 			Parser.fillProxies(Config.proxies);
 			Parser.fillRules(Config.rules);

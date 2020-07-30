@@ -63,6 +63,9 @@ export function parseProxyGroups(proxyGroups:Array<any>): Array<Proxy.BaseProxyG
 				case 'select':
 					p = new Proxy.SelectProxyGroup(item);
 					break;
+				case 'urltest':
+					p = new Proxy.UrlTestProxyGroup(item);
+					break;
 				default:
 					p = new Proxy.BaseProxyGroup(item);
 					break;
@@ -95,6 +98,17 @@ export function testFilterProxies(proxies:Array<Proxy.BaseProxy>) {
 	})
 }
 
+export function filterProxies(proxies:Array<Proxy.BaseProxy>) {
+	Config.Groups.forEach(g => {
+		let keywords = g.keywords.split(' ');
+		let fProxies:Array<Proxy.BaseProxy> = proxies;
+		keywords.forEach(k => {
+			fProxies = fProxies.filter(proxy => proxy.name.includes(k));
+		});
+		Config.filteredProxies.set(g.keywords, fProxies);
+	});
+}
+
 export function adaptRule(payload:Rule.PayloadRule, strategy:string): Rule.SingleRule {
 	return new Rule.SingleRule(payload, strategy);
 }
@@ -104,12 +118,21 @@ export function adaptRules(payload:Array<Rule.PayloadRule>|undefined, strategy:s
 	else return (<Array<Rule.PayloadRule>>payload).map(p => new Rule.SingleRule(p, strategy));
 }
 
-export function fillStrategy(input:Array<Proxy.BaseProxyGroup>) {
+export function processRule() {
+	Config.rulepayloads.forEach((rules, name) => {
+		if (Config.Groups.findIndex(g => g.name===name)>-1)
+		{
+			Config.rules = Config.rules.concat(adaptRules(rules, name))
+		}
+	});
+}
+
+export function processGroup(input:Array<Proxy.BaseProxyGroup>) {
 	input.forEach(i => {
-		let proxies = Config.filteredProxies.get(i.group);
+		let proxies = Config.filteredProxies.get(i.keywords);
 		if (typeof(proxies)!='undefined') {
 			proxies.forEach(p => i.proxies.push(p))
-			Config.filteredProxies.set(i.group, proxies)
+			Config.filteredProxies.set(i.keywords, proxies)
 		}
 	})
 }
@@ -122,11 +145,18 @@ export function fillGroup(input:Array<Proxy.BaseProxyGroup>) {
 			case Proxy.ProxyGroupType.Select:
 				t.type = 'select';
 				break;
+			case Proxy.ProxyGroupType.UrlTest:
+				t.type = 'url-test';
+				t.url = (<Proxy.UrlTestProxyGroup>g).url;
+				t.interval = (<Proxy.UrlTestProxyGroup>g).interval;
+				break;
 			default:
 				t.type = ' ';
 				break;
 		}
 		t.proxies = g.proxies.map(p => p.name);
+		if (g.direct) t.proxies.push('DIRECT');
+		if (g.reject) t.proxies.push('REJECT');
 		Config.OutConfig.proxyGroups.push(t);
 	})
 }
