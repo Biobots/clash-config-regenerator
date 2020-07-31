@@ -1,30 +1,40 @@
 generatorConfig:
-  - port: 1234
+  port: 1234
 
 proxy: #clash subscriptions
   - https://xxxxx
   - https://yyyyy
 
 rule: #rule providers
-  - name: test1
+  - name: group1
     url: 
       - https://github.com/Biobots/personalClashRule/raw/master/Workspace.yaml
       - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/PayPal.yaml
-  - name: test2
+  - name: group2
     url: 
       - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Hijacking.yaml
 
 groups: #proxy groups
-  - name: test1
-    keywords: 香港 上海
+  - name: group1
+    keywords: 
     type: select
-    direct: true
-    reject: true
+    subgroup: [DIRECT, REJECT, filter1]
 
-  - name: test2
-    keywords: 香港 高级
+  - name: group2
+    keywords: 
+    type: select
+    subgroup: [DIRECT, REJECT, filter2]
+
+  - name: filter1
+    keywords: 香港
     type: urltest
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
-    direct: false
-    reject: true
+    subgroup: []
+
+  - name: filter2
+    keywords: 美国
+    type: urltest
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    subgroup: []

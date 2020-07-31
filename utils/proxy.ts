@@ -22,8 +22,7 @@ export abstract class BaseProxyGroup {
 	type:ProxyGroupType
 	keywords:string
 	proxies:Array<BaseProxy>
-	direct:boolean
-	reject:boolean
+	subgroup:Array<string> = []
 
 	raw:any
 
@@ -33,8 +32,7 @@ export abstract class BaseProxyGroup {
 		this.keywords = raw.keywords;
 		this.type = ProxyGroupType.Base;
 		this.proxies = [];
-		this.direct = typeof(raw.direct)=='undefined'?false:raw.direct;
-		this.reject = typeof(raw.reject)=='undefined'?false:raw.reject;
+		if (typeof(raw.subgroup)!='undefined') this.subgroup = raw.subgroup;
 	}
 
 	abstract getRaw(): any;
@@ -49,12 +47,10 @@ export class SelectProxyGroup extends BaseProxyGroup {
 
 	getRaw(): any{
 		let ps = this.proxies.map(p => p.name);
-		if (this.direct) ps.push('DIRECT');
-		if (this.reject) ps.push('REJECT');
 		return {
 			name:this.name,
 			type:'select',
-			proxies:ps
+			proxies:ps.concat(this.subgroup)
 		};
 	}
 }
@@ -72,14 +68,13 @@ export class UrlTestProxyGroup extends BaseProxyGroup {
 
 	getRaw(): any{
 		let ps = this.proxies.map(p => p.name);
-		if (this.direct) ps.push('DIRECT');
-		if (this.reject) ps.push('REJECT');
+		ps.concat(this.subgroup);
 		return {
 			name:this.name,
 			type:'url-test',
 			url:this.url,
 			interval:this.interval,
-			proxies:ps
+			proxies:ps.concat(this.subgroup)
 		};
 	}
 }
