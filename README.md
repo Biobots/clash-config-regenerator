@@ -11,12 +11,14 @@ git clone git@github.com:Biobots/clash-config-regenerator.git
 Modify `config.yml` and `header.yml`. `src` and `dst` in `config_sample.yml` are now useless.
 
 ```bash
+yarn install
 yarn start
 ```
 
 or
 
 ```bash
+npm install
 npm start
 ```
 
