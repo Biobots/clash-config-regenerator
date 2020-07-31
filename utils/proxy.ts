@@ -53,7 +53,7 @@ export class SelectProxyGroup extends BaseProxyGroup {
 		if (this.reject) ps.push('REJECT');
 		return {
 			name:this.name,
-			type:'url-test',
+			type:'select',
 			proxies:ps
 		};
 	}
