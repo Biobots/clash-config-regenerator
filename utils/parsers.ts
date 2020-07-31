@@ -74,7 +74,7 @@ export function fillProxies(config:Config) {
 }
 
 export function fillRules(config:Config) {
-	config.rules.map(r => r.payload.type+','+r.payload.content+','+r.strategy)
+	config.rules.map(r => r.payload.option ? r.payload.prefix+','+r.strategy+','+ r.payload.suffix: r.payload.raw+','+r.strategy)
 		.forEach(item => {
 			config.OutConfig.rules.push(item)
 		})

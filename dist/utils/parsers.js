@@ -95,7 +95,7 @@ function fillProxies(config) {
 }
 exports.fillProxies = fillProxies;
 function fillRules(config) {
-    config.rules.map(function (r) { return r.payload.type + ',' + r.payload.content + ',' + r.strategy; })
+    config.rules.map(function (r) { return r.payload.option ? r.payload.prefix + ',' + r.strategy + ',' + r.payload.suffix : r.payload.raw + ',' + r.strategy; })
         .forEach(function (item) {
         config.OutConfig.rules.push(item);
     });

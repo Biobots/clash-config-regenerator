@@ -4,8 +4,24 @@ exports.SingleRule = exports.PayloadRule = void 0;
 var PayloadRule = /** @class */ (function () {
     function PayloadRule(raw) {
         var str = raw.split(',');
-        this.type = str[0];
-        this.content = str[1];
+        if (str.length > 2) {
+            this.prefix = str[0] + ',' + str[1];
+            this.suffix = str[2];
+            this.option = true;
+            this.raw = raw;
+        }
+        else if (str.length < 2) {
+            this.prefix = 'IP-CIDR,' + str[0];
+            this.raw = this.prefix;
+            this.suffix = '';
+            this.option = false;
+        }
+        else {
+            this.prefix = raw;
+            this.suffix = '';
+            this.option = false;
+            this.raw = raw;
+        }
     }
     return PayloadRule;
 }());

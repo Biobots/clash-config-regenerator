@@ -1,6 +1,8 @@
 export declare class PayloadRule {
-    type: string;
-    content: string;
+    prefix: string;
+    suffix: string;
+    raw: any;
+    option: boolean;
     constructor(raw: string);
 }
 export declare class SingleRule {
