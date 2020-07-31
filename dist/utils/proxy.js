@@ -33,13 +33,14 @@ var ProxyGroupType;
 })(ProxyGroupType = exports.ProxyGroupType || (exports.ProxyGroupType = {}));
 var BaseProxyGroup = /** @class */ (function () {
     function BaseProxyGroup(raw) {
+        this.subgroup = [];
         this.raw = raw;
         this.name = raw.name;
         this.keywords = raw.keywords;
         this.type = ProxyGroupType.Base;
         this.proxies = [];
-        this.direct = typeof (raw.direct) == 'undefined' ? false : raw.direct;
-        this.reject = typeof (raw.reject) == 'undefined' ? false : raw.reject;
+        if (typeof (raw.subgroup) != 'undefined')
+            this.subgroup = raw.subgroup;
     }
     return BaseProxyGroup;
 }());
@@ -53,14 +54,10 @@ var SelectProxyGroup = /** @class */ (function (_super) {
     }
     SelectProxyGroup.prototype.getRaw = function () {
         var ps = this.proxies.map(function (p) { return p.name; });
-        if (this.direct)
-            ps.push('DIRECT');
-        if (this.reject)
-            ps.push('REJECT');
         return {
             name: this.name,
-            type: 'url-test',
-            proxies: ps
+            type: 'select',
+            proxies: ps.concat(this.subgroup)
         };
     };
     return SelectProxyGroup;
@@ -77,16 +74,13 @@ var UrlTestProxyGroup = /** @class */ (function (_super) {
     }
     UrlTestProxyGroup.prototype.getRaw = function () {
         var ps = this.proxies.map(function (p) { return p.name; });
-        if (this.direct)
-            ps.push('DIRECT');
-        if (this.reject)
-            ps.push('REJECT');
+        ps.concat(this.subgroup);
         return {
             name: this.name,
             type: 'url-test',
             url: this.url,
             interval: this.interval,
-            proxies: ps
+            proxies: ps.concat(this.subgroup)
         };
     };
     return UrlTestProxyGroup;

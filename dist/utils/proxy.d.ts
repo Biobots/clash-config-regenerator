@@ -18,8 +18,7 @@ export declare abstract class BaseProxyGroup {
     type: ProxyGroupType;
     keywords: string;
     proxies: Array<BaseProxy>;
-    direct: boolean;
-    reject: boolean;
+    subgroup: Array<string>;
     raw: any;
     constructor(raw: any);
     abstract getRaw(): any;
