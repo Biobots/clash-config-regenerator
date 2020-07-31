@@ -33,20 +33,20 @@ function adaptRules(payload, strategy) {
         return payload.map(function (p) { return new Rule.SingleRule(p, strategy); });
 }
 exports.adaptRules = adaptRules;
-function generateRuleByPayload() {
-    configs_1.Config.rulepayloads.forEach(function (rules, name) {
+function generateRuleByPayload(config) {
+    config.rulepayloads.forEach(function (rules, name) {
         if (configs_1.Config.Groups.findIndex(function (g) { return g.name === name; }) > -1) {
-            configs_1.Config.rules = configs_1.Config.rules.concat(adaptRules(rules, name));
+            config.rules = config.rules.concat(adaptRules(rules, name));
         }
     });
 }
 exports.generateRuleByPayload = generateRuleByPayload;
-function processGroup(input) {
+function processGroup(config, input) {
     input.forEach(function (i) {
-        var proxies = configs_1.Config.filteredProxies.get(i.keywords);
+        var proxies = config.filteredProxies.get(i.keywords);
         if (typeof (proxies) != 'undefined') {
             proxies.forEach(function (p) { return i.proxies.push(p); });
-            configs_1.Config.filteredProxies.set(i.keywords, proxies);
+            config.filteredProxies.set(i.keywords, proxies);
         }
     });
 }

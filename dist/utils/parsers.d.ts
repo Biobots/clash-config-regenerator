@@ -1,9 +1,10 @@
+import { Config } from './configs';
 import * as Proxy from './proxy';
 import * as Rule from './rule';
 export declare function parseProxies(proxies: Array<any>): Array<Proxy.BaseProxy>;
 export declare function parseProxyGroups(proxyGroups: Array<any>): Array<Proxy.BaseProxyGroup>;
 export declare function parseSingleRule(payload: string): Rule.SingleRule;
 export declare function parseRulePayload(payload: Array<any>): Array<Rule.PayloadRule>;
-export declare function fillGroup(input: Array<Proxy.BaseProxyGroup>): void;
-export declare function fillProxies(input: Array<Proxy.BaseProxy>): void;
-export declare function fillRules(input: Array<Rule.SingleRule>): void;
+export declare function fillGroup(config: Config, input: Array<Proxy.BaseProxyGroup>): void;
+export declare function fillProxies(config: Config): void;
+export declare function fillRules(config: Config): void;

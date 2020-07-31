@@ -44,7 +44,7 @@ var configs_1 = require("./configs");
 var axios_1 = __importDefault(require("axios"));
 var yaml = require("js-yaml");
 var parsers_1 = require("./parsers");
-function getProxies() {
+function getProxies(config) {
     return __awaiter(this, void 0, void 0, function () {
         var promises, res;
         return __generator(this, function (_a) {
@@ -55,7 +55,7 @@ function getProxies() {
                     return [4 /*yield*/, Promise.all(promises)];
                 case 1:
                     res = _a.sent();
-                    configs_1.Config.proxies = res.map(function (item) { return item.data; })
+                    config.proxies = res.map(function (item) { return item.data; })
                         .map(function (doc) { return yaml.safeLoad(doc); })
                         .map(function (obj) { return obj.proxies; })
                         .map(function (raw) { return parsers_1.parseProxies(raw); })
@@ -66,24 +66,24 @@ function getProxies() {
     });
 }
 exports.getProxies = getProxies;
-function getSinglePaylaod(url, name) {
+function getSinglePaylaod(config, url, name) {
     var promise = axios_1.default.get(url);
     return promise.then(function (res) {
         var _a;
-        return configs_1.Config.rulepayloads.has(name) ?
-            configs_1.Config.rulepayloads.set(name, (_a = (configs_1.Config.rulepayloads.get(name))) === null || _a === void 0 ? void 0 : _a.concat(parsers_1.parseRulePayload(yaml.safeLoad(res.data).payload))) :
-            configs_1.Config.rulepayloads.set(name, parsers_1.parseRulePayload(yaml.safeLoad(res.data).payload));
+        return config.rulepayloads.has(name) ?
+            config.rulepayloads.set(name, (_a = (config.rulepayloads.get(name))) === null || _a === void 0 ? void 0 : _a.concat(parsers_1.parseRulePayload(yaml.safeLoad(res.data).payload))) :
+            config.rulepayloads.set(name, parsers_1.parseRulePayload(yaml.safeLoad(res.data).payload));
     });
 }
 exports.getSinglePaylaod = getSinglePaylaod;
-function getRulePayload() {
+function getRulePayload(config) {
     return __awaiter(this, void 0, void 0, function () {
         var promises;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     promises = [];
-                    configs_1.Config.ruleurl.forEach(function (urls, name) { return urls.forEach(function (url) { return promises.push(getSinglePaylaod(url, name)); }); });
+                    configs_1.Config.ruleurl.forEach(function (urls, name) { return urls.forEach(function (url) { return promises.push(getSinglePaylaod(config, url, name)); }); });
                     return [4 /*yield*/, Promise.all(promises)];
                 case 1:
                     _a.sent();

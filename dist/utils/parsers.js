@@ -81,23 +81,24 @@ function parseRulePayload(payload) {
     return payload.map(function (p) { return new Rule.PayloadRule(p); });
 }
 exports.parseRulePayload = parseRulePayload;
-function fillGroup(input) {
+function fillGroup(config, input) {
     input.forEach(function (g) {
-        configs_1.Config.OutConfig.proxyGroups.push(g.getRaw());
+        config.OutConfig.proxyGroups.push(g.getRaw());
     });
 }
 exports.fillGroup = fillGroup;
-function fillProxies(input) {
-    input.map(function (p) { return p.raw; })
+function fillProxies(config) {
+    config.proxies.map(function (p) { return p.raw; })
         .forEach(function (item) {
-        configs_1.Config.OutConfig.proxies.push(item);
+        config.OutConfig.proxies.push(item);
     });
 }
 exports.fillProxies = fillProxies;
-function fillRules(input) {
-    input.map(function (r) { return r.payload.type + ',' + r.payload.content + ',' + r.strategy; })
+function fillRules(config) {
+    config.rules.map(function (r) { return r.payload.type + ',' + r.payload.content + ',' + r.strategy; })
         .forEach(function (item) {
-        configs_1.Config.OutConfig.rules.push(item);
+        config.OutConfig.rules.push(item);
     });
+    config.OutConfig.rules.push('MATCH,' + configs_1.Config.final);
 }
 exports.fillRules = fillRules;

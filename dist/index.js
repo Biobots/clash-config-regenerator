@@ -30,20 +30,21 @@ var Filter = __importStar(require("./utils/filter"));
 var Process = __importStar(require("./utils/process"));
 var app = express();
 app.get('/', function (req, res) {
+    var config = new configs_1.Config();
     Promise.all([
-        Net.getRulePayload(),
-        Net.getProxies()
+        Net.getRulePayload(config),
+        Net.getProxies(config)
     ])
         .finally(function () {
-        Process.generateRuleByPayload();
-        Filter.filterProxies(configs_1.Config.proxies);
-        Process.processGroup(configs_1.Config.Groups);
-        Parser.fillGroup(configs_1.Config.Groups);
-        Parser.fillProxies(configs_1.Config.proxies);
-        Parser.fillRules(configs_1.Config.rules);
-        configs_1.Config.rawStr += yaml.safeDump(configs_1.Config.OutConfig);
-        configs_1.Config.rawStr = configs_1.Config.rawStr.replace('proxyGroups', 'proxy-groups');
-        fs.writeFileSync('out.yml', configs_1.Config.rawStr, 'utf-8');
+        Process.generateRuleByPayload(config);
+        Filter.filterProxies(config);
+        Process.processGroup(config, configs_1.Config.Groups);
+        Parser.fillGroup(config, configs_1.Config.Groups);
+        Parser.fillProxies(config);
+        Parser.fillRules(config);
+        config.rawStr += yaml.safeDump(config.OutConfig);
+        config.rawStr = config.rawStr.replace('proxyGroups', 'proxy-groups');
+        fs.writeFileSync('out.yml', config.rawStr, 'utf-8');
         res.writeHead(200, { 'Content-type': mime.getType('out.yml'), "Content-Disposition": 'attachment; filename=out.yml' });
         fs.createReadStream('out.yml').pipe(res);
     });

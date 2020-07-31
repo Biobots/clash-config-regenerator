@@ -7,34 +7,64 @@ proxy: #clash subscriptions
   - https://yyyyy
 
 rule: #rule providers
-  - name: group1
+  - name: CHINA
     url: 
-      - https://github.com/Biobots/personalClashRule/raw/master/Workspace.yaml
+      - https://raw.githubusercontent.com/Biobots/personalClashRule/master/China.yaml
+      - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/China.yaml
+  - name: PROXY
+    url: 
+      - https://raw.githubusercontent.com/Biobots/personalClashRule/master/Workspace.yaml
       - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/PayPal.yaml
-  - name: group2
+  - name: STEAM
     url: 
+      - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/Game/Steam.yaml
+  - name: BLOCK
+    url: 
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/BanAD.yaml
       - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Hijacking.yaml
 
 groups: #proxy groups
-  - name: group1
+  - name: PROXY
     keywords: 
     type: select
-    subgroup: [DIRECT, REJECT, filter1]
+    subgroup: [hk, us, jp, DIRECT, REJECT]
 
-  - name: group2
+  - name: STEAM
     keywords: 
     type: select
-    subgroup: [DIRECT, REJECT, filter2]
+    subgroup: [hk, us, jp, DIRECT, REJECT]
 
-  - name: filter1
+  - name: BLOCK
+    keywords: 
+    type: select
+    subgroup: [REJECT, DIRECT]
+
+  - name: CHINA
+    keywords: 
+    type: select
+    subgroup: [DIRECT, REJECT]
+
+  - name: FINAL
+    keywords: 
+    type: select
+    subgroup: [PROXY, DIRECT, REJECT]
+
+  - name: hk
     keywords: 香港
     type: urltest
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
     subgroup: []
 
-  - name: filter2
+  - name: us
     keywords: 美国
+    type: urltest
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    subgroup: []
+
+  - name: jp
+    keywords: 日本
     type: urltest
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
