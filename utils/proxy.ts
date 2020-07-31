@@ -17,7 +17,7 @@ export enum ProxyGroupType {
 	UrlTest
 }
 
-export class BaseProxyGroup {
+export abstract class BaseProxyGroup {
 	name:string
 	type:ProxyGroupType
 	keywords:string
@@ -36,6 +36,8 @@ export class BaseProxyGroup {
 		this.direct = typeof(raw.direct)=='undefined'?false:raw.direct;
 		this.reject = typeof(raw.reject)=='undefined'?false:raw.reject;
 	}
+
+	abstract getRaw(): any;
 }
 
 export class SelectProxyGroup extends BaseProxyGroup {
@@ -43,6 +45,17 @@ export class SelectProxyGroup extends BaseProxyGroup {
 	constructor(raw:any) {
 		super(raw);
 		this.type = ProxyGroupType.Select;
+	}
+
+	getRaw(): any{
+		let ps = this.proxies.map(p => p.name);
+		if (this.direct) ps.push('DIRECT');
+		if (this.reject) ps.push('REJECT');
+		return {
+			name:this.name,
+			type:'url-test',
+			proxies:ps
+		};
 	}
 }
 
@@ -56,14 +69,24 @@ export class UrlTestProxyGroup extends BaseProxyGroup {
 		this.url = raw.url;
 		this.interval = raw.interval;
 	}
+
+	getRaw(): any{
+		let ps = this.proxies.map(p => p.name);
+		if (this.direct) ps.push('DIRECT');
+		if (this.reject) ps.push('REJECT');
+		return {
+			name:this.name,
+			type:'url-test',
+			url:this.url,
+			interval:this.interval,
+			proxies:ps
+		};
+	}
 }
 
 export class BaseProxy {
 	name:string
 	type:ProxyType
-
-	dstLoc:string|undefined
-	srcLoc:string|undefined
 
 	raw:any
 
@@ -71,8 +94,6 @@ export class BaseProxy {
 		this.name = raw.name;
 		this.raw = raw;
 		this.type = ProxyType.Base;
-		this.dstLoc = Config.DstLoc.filter(str => this.name.match(str))[0];
-		this.srcLoc = Config.SrcLoc.filter(str => this.name.match(str))[0];
 	}
 }
 

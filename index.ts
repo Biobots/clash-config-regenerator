@@ -1,23 +1,27 @@
 import express = require('express');
+import http = require('http');
 import yaml = require('js-yaml');
 import fs = require('fs');
 import mime = require('mime');
 import {Config} from './utils/configs'
 import * as Parser from './utils/parsers'
+import * as Net from './utils/network'
+import * as Filter from './utils/filter'
+import * as Process from './utils/process'
 
 const app:express.Application = express();
 
 app.get('/', function(req:express.Request, res:express.Response) {
 	Promise.all(
 		[
-			Parser.getRulePayload(), 
-			Parser.getProxies()
+			Net.getRulePayload(), 
+			Net.getProxies()
 		])
 		.finally(() => 
 		{
-			Parser.processRule();
-			Parser.filterProxies(Config.proxies);
-			Parser.processGroup(Config.Groups);
+			Process.generateRuleByPayload();
+			Filter.filterProxies(Config.proxies);
+			Process.processGroup(Config.Groups);
 			Parser.fillGroup(Config.Groups);
 			Parser.fillProxies(Config.proxies);
 			Parser.fillRules(Config.rules);
@@ -29,7 +33,8 @@ app.get('/', function(req:express.Request, res:express.Response) {
 		})
 });
 
-app.listen(1234, function() {
-	console.log('running');
-	Config.load('config.yml');
+Config.load('config.yml');
+
+app.listen(Config.port, function() {
+	console.log('running at ' + Config.port);
 });

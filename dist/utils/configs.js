@@ -8,16 +8,26 @@ var Config = /** @class */ (function () {
     function Config() {
     }
     Config.load = function (path) {
-        var configfile = yaml.safeLoad(fs.readFileSync(path, 'utf-8'));
-        Config.proxyurl = configfile.proxy;
-        configfile.rule.forEach(function (r) {
-            Config.ruleurl.set(r.name, r.url);
-        });
-        Config.DstLoc = configfile.dst;
-        Config.SrcLoc = configfile.src;
-        Config.Groups = parsers_1.parseProxyGroups(configfile.groups);
-        this.rawStr = fs.readFileSync('header.yml', 'utf-8') + '\n';
+        try {
+            var configfile = yaml.safeLoad(fs.readFileSync(path, 'utf-8'));
+            //server config
+            Config.port = configfile.generatorConfig.port;
+            //generator config
+            Config.proxyurl = configfile.proxy;
+            configfile.rule.forEach(function (r) {
+                Config.ruleurl.set(r.name, r.url);
+            });
+            Config.DstLoc = configfile.dst;
+            Config.SrcLoc = configfile.src;
+            Config.Groups = parsers_1.parseProxyGroups(configfile.groups);
+            this.rawStr = fs.readFileSync('header.yml', 'utf-8') + '\n';
+        }
+        catch (error) {
+            console.log(error);
+            process.exit(1);
+        }
     };
+    Config.port = 1234;
     Config.proxyurl = [];
     Config.ruleurl = new Map();
     Config.DstLoc = [];

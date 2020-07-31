@@ -14,7 +14,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Trojan = exports.Http = exports.Socks5 = exports.Shadowsocks = exports.Vmess = exports.BaseProxy = exports.UrlTestProxyGroup = exports.SelectProxyGroup = exports.BaseProxyGroup = exports.ProxyGroupType = exports.ProxyType = void 0;
-var configs_1 = require("./configs");
 var ProxyType;
 (function (ProxyType) {
     ProxyType[ProxyType["Base"] = 0] = "Base";
@@ -52,6 +51,18 @@ var SelectProxyGroup = /** @class */ (function (_super) {
         _this.type = ProxyGroupType.Select;
         return _this;
     }
+    SelectProxyGroup.prototype.getRaw = function () {
+        var ps = this.proxies.map(function (p) { return p.name; });
+        if (this.direct)
+            ps.push('DIRECT');
+        if (this.reject)
+            ps.push('REJECT');
+        return {
+            name: this.name,
+            type: 'url-test',
+            proxies: ps
+        };
+    };
     return SelectProxyGroup;
 }(BaseProxyGroup));
 exports.SelectProxyGroup = SelectProxyGroup;
@@ -64,17 +75,28 @@ var UrlTestProxyGroup = /** @class */ (function (_super) {
         _this.interval = raw.interval;
         return _this;
     }
+    UrlTestProxyGroup.prototype.getRaw = function () {
+        var ps = this.proxies.map(function (p) { return p.name; });
+        if (this.direct)
+            ps.push('DIRECT');
+        if (this.reject)
+            ps.push('REJECT');
+        return {
+            name: this.name,
+            type: 'url-test',
+            url: this.url,
+            interval: this.interval,
+            proxies: ps
+        };
+    };
     return UrlTestProxyGroup;
 }(BaseProxyGroup));
 exports.UrlTestProxyGroup = UrlTestProxyGroup;
 var BaseProxy = /** @class */ (function () {
     function BaseProxy(raw) {
-        var _this = this;
         this.name = raw.name;
         this.raw = raw;
         this.type = ProxyType.Base;
-        this.dstLoc = configs_1.Config.DstLoc.filter(function (str) { return _this.name.match(str); })[0];
-        this.srcLoc = configs_1.Config.SrcLoc.filter(function (str) { return _this.name.match(str); })[0];
     }
     return BaseProxy;
 }());

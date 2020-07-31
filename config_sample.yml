@@ -1,26 +1,18 @@
+generatorConfig:
+  - port: 1234
+
 proxy: #clash subscriptions
   - https://xxxxx
   - https://yyyyy
 
-src: #useless
-  - '香港'
-  - '美国'
-  - '日本'
-  - '台湾'
-  - '澳洲'
-
-dst: #useless
-  - '上海'
-  - '北京'
-  - '广州'
-
 rule: #rule providers
-  - 
-    name: test1
-    url: https://github.com/Biobots/personalClashRule/raw/master/Workspace.yaml
-  - 
-    name: test2
-    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Hijacking.yaml
+  - name: test1
+    url: 
+      - https://github.com/Biobots/personalClashRule/raw/master/Workspace.yaml
+      - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/PayPal.yaml
+  - name: test2
+    url: 
+      - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Hijacking.yaml
 
 groups: #proxy groups
   - name: test1

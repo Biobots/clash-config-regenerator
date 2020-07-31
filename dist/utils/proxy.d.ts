@@ -13,7 +13,7 @@ export declare enum ProxyGroupType {
     Select = 1,
     UrlTest = 2
 }
-export declare class BaseProxyGroup {
+export declare abstract class BaseProxyGroup {
     name: string;
     type: ProxyGroupType;
     keywords: string;
@@ -22,20 +22,21 @@ export declare class BaseProxyGroup {
     reject: boolean;
     raw: any;
     constructor(raw: any);
+    abstract getRaw(): any;
 }
 export declare class SelectProxyGroup extends BaseProxyGroup {
     constructor(raw: any);
+    getRaw(): any;
 }
 export declare class UrlTestProxyGroup extends BaseProxyGroup {
     url: string;
     interval: number;
     constructor(raw: any);
+    getRaw(): any;
 }
 export declare class BaseProxy {
     name: string;
     type: ProxyType;
-    dstLoc: string | undefined;
-    srcLoc: string | undefined;
     raw: any;
     constructor(raw: any);
 }

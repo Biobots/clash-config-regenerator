@@ -25,16 +25,19 @@ var fs = require("fs");
 var mime = require("mime");
 var configs_1 = require("./utils/configs");
 var Parser = __importStar(require("./utils/parsers"));
+var Net = __importStar(require("./utils/network"));
+var Filter = __importStar(require("./utils/filter"));
+var Process = __importStar(require("./utils/process"));
 var app = express();
 app.get('/', function (req, res) {
     Promise.all([
-        Parser.getRulePayload(),
-        Parser.getProxies()
+        Net.getRulePayload(),
+        Net.getProxies()
     ])
         .finally(function () {
-        Parser.processRule();
-        Parser.filterProxies(configs_1.Config.proxies);
-        Parser.processGroup(configs_1.Config.Groups);
+        Process.generateRuleByPayload();
+        Filter.filterProxies(configs_1.Config.proxies);
+        Process.processGroup(configs_1.Config.Groups);
         Parser.fillGroup(configs_1.Config.Groups);
         Parser.fillProxies(configs_1.Config.proxies);
         Parser.fillRules(configs_1.Config.rules);
@@ -45,7 +48,7 @@ app.get('/', function (req, res) {
         fs.createReadStream('out.yml').pipe(res);
     });
 });
-app.listen(1234, function () {
-    console.log('running');
-    configs_1.Config.load('config.yml');
+configs_1.Config.load('config.yml');
+app.listen(configs_1.Config.port, function () {
+    console.log('running at ' + configs_1.Config.port);
 });
