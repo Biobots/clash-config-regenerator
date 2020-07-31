@@ -60,22 +60,23 @@ export function parseRulePayload(payload:Array<any>): Array<Rule.PayloadRule> {
 	return payload.map(p => new Rule.PayloadRule(p));
 }
 
-export function fillGroup(input:Array<Proxy.BaseProxyGroup>) {
+export function fillGroup(config:Config, input:Array<Proxy.BaseProxyGroup>) {
 	input.forEach(g => {
-		Config.OutConfig.proxyGroups.push(g.getRaw());
+		config.OutConfig.proxyGroups.push(g.getRaw());
 	})
 }
 
-export function fillProxies(input:Array<Proxy.BaseProxy>) {
-    input.map(p => p.raw)
+export function fillProxies(config:Config) {
+    config.proxies.map(p => p.raw)
 		.forEach(item => {
-		    Config.OutConfig.proxies.push(item)
+		    config.OutConfig.proxies.push(item)
 		})
 }
 
-export function fillRules(input:Array<Rule.SingleRule>) {
-	input.map(r => r.payload.type+','+r.payload.content+','+r.strategy)
+export function fillRules(config:Config) {
+	config.rules.map(r => r.payload.type+','+r.payload.content+','+r.strategy)
 		.forEach(item => {
-			Config.OutConfig.rules.push(item)
+			config.OutConfig.rules.push(item)
 		})
+	config.OutConfig.rules.push('MATCH,'+Config.final)
 }

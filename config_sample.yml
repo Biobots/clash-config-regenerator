@@ -1,5 +1,6 @@
 generatorConfig:
   port: 1234
+  final: FINAL
 
 proxy: #clash subscriptions
   - https://xxxxx

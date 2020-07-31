@@ -12,22 +12,23 @@ import * as Process from './utils/process'
 const app:express.Application = express();
 
 app.get('/', function(req:express.Request, res:express.Response) {
+	let config:Config = new Config();
 	Promise.all(
 		[
-			Net.getRulePayload(), 
-			Net.getProxies()
+			Net.getRulePayload(config), 
+			Net.getProxies(config)
 		])
 		.finally(() => 
 		{
-			Process.generateRuleByPayload();
-			Filter.filterProxies(Config.proxies);
-			Process.processGroup(Config.Groups);
-			Parser.fillGroup(Config.Groups);
-			Parser.fillProxies(Config.proxies);
-			Parser.fillRules(Config.rules);
-			Config.rawStr += yaml.safeDump(Config.OutConfig)
-			Config.rawStr = Config.rawStr.replace('proxyGroups', 'proxy-groups')
-			fs.writeFileSync('out.yml', Config.rawStr, 'utf-8')
+			Process.generateRuleByPayload(config);
+			Filter.filterProxies(config);
+			Process.processGroup(config, Config.Groups);
+			Parser.fillGroup(config, Config.Groups);
+			Parser.fillProxies(config);
+			Parser.fillRules(config);
+			config.rawStr += yaml.safeDump(config.OutConfig)
+			config.rawStr = config.rawStr.replace('proxyGroups', 'proxy-groups')
+			fs.writeFileSync('out.yml', config.rawStr, 'utf-8')
 			res.writeHead(200, {'Content-type':<string>mime.getType('out.yml'), "Content-Disposition": 'attachment; filename=out.yml'});
 			fs.createReadStream('out.yml').pipe(res);
 		})

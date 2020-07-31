@@ -11,21 +11,21 @@ export function adaptRules(payload:Array<Rule.PayloadRule>|undefined, strategy:s
 	else return (<Array<Rule.PayloadRule>>payload).map(p => new Rule.SingleRule(p, strategy));
 }
 
-export function generateRuleByPayload() {
-	Config.rulepayloads.forEach((rules, name) => {
+export function generateRuleByPayload(config:Config) {
+	config.rulepayloads.forEach((rules, name) => {
 		if (Config.Groups.findIndex(g => g.name===name)>-1)
 		{
-			Config.rules = Config.rules.concat(adaptRules(rules, name))
+			config.rules = config.rules.concat(adaptRules(rules, name))
 		}
 	});
 }
 
-export function processGroup(input:Array<Proxy.BaseProxyGroup>) {
+export function processGroup(config:Config, input:Array<Proxy.BaseProxyGroup>) {
 	input.forEach(i => {
-		let proxies = Config.filteredProxies.get(i.keywords);
+		let proxies = config.filteredProxies.get(i.keywords);
 		if (typeof(proxies)!='undefined') {
 			proxies.forEach(p => i.proxies.push(p))
-			Config.filteredProxies.set(i.keywords, proxies)
+			config.filteredProxies.set(i.keywords, proxies)
 		}
 	})
 }

@@ -1,7 +1,8 @@
 import { Config } from "./configs";
 import * as Proxy from './proxy'
 
-export function filterProxies(proxies:Array<Proxy.BaseProxy>) {
+export function filterProxies(config:Config) {
+	let proxies:Array<Proxy.BaseProxy> = config.proxies
 	Config.Groups.forEach(g => {
 		if (g.keywords!=null)
 		{
@@ -10,8 +11,8 @@ export function filterProxies(proxies:Array<Proxy.BaseProxy>) {
 			keywords.forEach(k => {
 				fProxies = fProxies.filter(proxy => proxy.name.includes(k));
 			});
-			if (!Config.filteredProxies.has(g.keywords))
-				Config.filteredProxies.set(g.keywords, fProxies);
+			if (!config.filteredProxies.has(g.keywords))
+				config.filteredProxies.set(g.keywords, fProxies);
 		}
 	});
 }
