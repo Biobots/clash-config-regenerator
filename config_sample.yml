@@ -1,38 +1,99 @@
-generatorConfig:
-  port: 1234
-  final: FINAL
+header: './config/header.yml' # header file path
 
-proxy: #clash subscriptions
+final: FINAL # final MATCH rule
+
+sub: # clash subscriptions
   - https://xxxxx
   - https://yyyyy
 
-rule: #rule providers
-  - name: CHINA
-    url: 
-      - https://raw.githubusercontent.com/Biobots/personalClashRule/master/China.yaml
-      - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/China.yaml
+proxy: # single proxies
+  - name: proxy1
+      type: vmess
+      server: xxxx
+      port: 1111
+      uuid: uuid
+      alterId: x
+      cipher: auto
+      udp: true
+  - name: proxy2
+      type: vmess
+      server: xxxx
+      port: 1111
+      uuid: uuid
+      alterId: x
+      cipher: auto
+      udp: true
+
+rule: # rule providers
   - name: PROXY
+    prior: 0 # smaller number means higher priority, rules with same priority will be listed randomly
     url: 
-      - https://raw.githubusercontent.com/Biobots/personalClashRule/master/Workspace.yaml
-      - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/PayPal.yaml
-  - name: STEAM
-    url: 
-      - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/Game/Steam.yaml
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ProxyGFWlist.yaml
+    extra: # single record
+      - 'DOMAIN-SUFFIX,xxxx.com'
+  - name: Lite
+    prior: 1
+    url:
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ProxyLite.yaml
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/Ruleset/Developer.yaml
+  - name: Apple
+    prior: 1
+    url:
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/Ruleset/Apple.yaml
+  - name: Bahamut
+    prior: 1
+    url:
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/Ruleset/Bahamut.yaml
+  - name: Steam-CN
+    prior: 1
+    url:
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/Ruleset/SteamCN.yaml
   - name: BLOCK
+    prior: 0
     url: 
       - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/BanAD.yaml
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/BanProgramAD.yaml
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/BanEasyListChina.yaml
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/BanEasyList.yaml
       - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Guard/Hijacking.yaml
+  - name: CHINA
+    prior: 2
+    url: 
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ChinaIp.yaml
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ChinaDomain.yaml
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ChinaCompanyIp.yaml
+    record:
+      - 'GEOIP,CN'
+  - name: LOCAL
+    prior: 0
+    url:
+      - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/LocalAreaNetwork.yaml
 
-groups: #proxy groups
+groups: # proxy groups
   - name: PROXY
     keywords: 
     type: select
-    subgroup: [hk, us, jp, DIRECT, REJECT]
+    subgroup: [hk, us, jp, tw, DIRECT, REJECT]
 
-  - name: STEAM
+  - name: Lite
     keywords: 
     type: select
-    subgroup: [hk, us, jp, DIRECT, REJECT]
+    subgroup: [hk, us, jp, tw, DIRECT, REJECT]
+
+  - name: Apple
+    keywords: 
+    type: select
+    subgroup: [hk, us, jp, tw, DIRECT, REJECT]
+
+  - name: Bahamut
+    keywords: 
+    type: select
+    subgroup: [tw, DIRECT, REJECT]
+
+  - name: Steam-CN
+    keywords: 
+    type: select
+    subgroup: [DIRECT, hk, us, jp, tw, REJECT]
 
   - name: BLOCK
     keywords: 
@@ -48,6 +109,11 @@ groups: #proxy groups
     keywords: 
     type: select
     subgroup: [PROXY, DIRECT, REJECT]
+
+  - name: LOCAL
+    keywords: 
+    type: select
+    subgroup: [DIRECT, REJECT]
 
   - name: hk
     keywords: 香港
@@ -65,6 +131,13 @@ groups: #proxy groups
 
   - name: jp
     keywords: 日本
+    type: urltest
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    subgroup: []
+
+  - name: tw
+    keywords: 台湾
     type: urltest
     url: 'http://www.gstatic.com/generate_204'
     interval: 300

@@ -1,12 +1,14 @@
-export declare class PayloadRule {
+export declare class Rule {
     prefix: string;
     suffix: string;
     raw: any;
-    option: boolean;
     constructor(raw: string);
+    getRaw(strategy: string): string;
 }
-export declare class SingleRule {
-    payload: PayloadRule;
-    strategy: string;
-    constructor(payload: PayloadRule, strategy: string);
+export declare class RuleGroup {
+    name: string;
+    prior: number;
+    payload: Rule[];
+    constructor(name: string, prior: number, payload: Rule[]);
+    getRaw(): string[];
 }

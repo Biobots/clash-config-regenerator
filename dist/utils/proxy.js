@@ -53,11 +53,10 @@ var SelectProxyGroup = /** @class */ (function (_super) {
         return _this;
     }
     SelectProxyGroup.prototype.getRaw = function () {
-        var ps = this.proxies.map(function (p) { return p.name; });
         return {
             name: this.name,
             type: 'select',
-            proxies: ps.concat(this.subgroup)
+            proxies: this.subgroup.concat(this.proxies.map(function (p) { return p.name; }))
         };
     };
     return SelectProxyGroup;
@@ -73,14 +72,12 @@ var UrlTestProxyGroup = /** @class */ (function (_super) {
         return _this;
     }
     UrlTestProxyGroup.prototype.getRaw = function () {
-        var ps = this.proxies.map(function (p) { return p.name; });
-        ps.concat(this.subgroup);
         return {
             name: this.name,
             type: 'url-test',
             url: this.url,
             interval: this.interval,
-            proxies: ps.concat(this.subgroup)
+            proxies: this.subgroup.concat(this.proxies.map(function (p) { return p.name; }))
         };
     };
     return UrlTestProxyGroup;

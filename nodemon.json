@@ -1,0 +1,7 @@
+{
+	"verbose": false,
+	"debug": true,
+	"exec": "ts-node ./index.ts",
+	"watch": ["./utils/", "./", "./config/"],
+	"ext": "ts"
+}

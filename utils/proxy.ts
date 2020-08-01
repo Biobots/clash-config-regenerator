@@ -1,5 +1,3 @@
-import {Config} from './configs'
-
 export enum ProxyType {
 	Base,
 	Vmess,
@@ -46,11 +44,10 @@ export class SelectProxyGroup extends BaseProxyGroup {
 	}
 
 	getRaw(): any{
-		let ps = this.proxies.map(p => p.name);
 		return {
 			name:this.name,
 			type:'select',
-			proxies:ps.concat(this.subgroup)
+			proxies:this.subgroup.concat(this.proxies.map(p => p.name))
 		};
 	}
 }
@@ -67,14 +64,12 @@ export class UrlTestProxyGroup extends BaseProxyGroup {
 	}
 
 	getRaw(): any{
-		let ps = this.proxies.map(p => p.name);
-		ps.concat(this.subgroup);
 		return {
 			name:this.name,
 			type:'url-test',
 			url:this.url,
 			interval:this.interval,
-			proxies:ps.concat(this.subgroup)
+			proxies:this.subgroup.concat(this.proxies.map(p => p.name))
 		};
 	}
 }

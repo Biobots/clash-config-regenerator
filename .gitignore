@@ -1,4 +1,4 @@
-config.yml
-out.yml
+tmp/*
+config/*
 
 node_modules
