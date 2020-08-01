@@ -95,7 +95,15 @@ function fillProxies(config) {
 }
 exports.fillProxies = fillProxies;
 function fillRules(config) {
-    config.rules.map(function (r) { return r.payload.option ? r.payload.prefix + ',' + r.strategy + ',' + r.payload.suffix : r.payload.raw + ',' + r.strategy; })
+    config.rules
+        .filter(function (r) { return !(r.payload.prefix.startsWith('IP-CIDR') || r.payload.prefix.startsWith('GEOIP')); })
+        .map(function (r) { return r.payload.option ? r.payload.prefix + ',' + r.strategy + ',' + r.payload.suffix : r.payload.raw + ',' + r.strategy; })
+        .forEach(function (item) {
+        config.OutConfig.rules.push(item);
+    });
+    config.rules
+        .filter(function (r) { return r.payload.prefix.startsWith('IP-CIDR') || r.payload.prefix.startsWith('GEOIP'); })
+        .map(function (r) { return r.payload.option ? r.payload.prefix + ',' + r.strategy + ',' + r.payload.suffix : r.payload.raw + ',' + r.strategy; })
         .forEach(function (item) {
         config.OutConfig.rules.push(item);
     });

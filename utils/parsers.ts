@@ -74,9 +74,17 @@ export function fillProxies(config:Config) {
 }
 
 export function fillRules(config:Config) {
-	config.rules.map(r => r.payload.option ? r.payload.prefix+','+r.strategy+','+ r.payload.suffix: r.payload.raw+','+r.strategy)
+	config.rules
+		.filter( r => !(r.payload.prefix.startsWith('IP-CIDR')||r.payload.prefix.startsWith('GEOIP')))
+		.map(r => r.payload.option ? r.payload.prefix+','+r.strategy+','+ r.payload.suffix: r.payload.raw+','+r.strategy)
 		.forEach(item => {
 			config.OutConfig.rules.push(item)
-		})
+		});
+	config.rules
+		.filter( r => r.payload.prefix.startsWith('IP-CIDR')||r.payload.prefix.startsWith('GEOIP'))
+		.map(r => r.payload.option ? r.payload.prefix+','+r.strategy+','+ r.payload.suffix: r.payload.raw+','+r.strategy)
+		.forEach(item => {
+			config.OutConfig.rules.push(item)
+		});
 	config.OutConfig.rules.push('MATCH,'+Config.final)
 }
