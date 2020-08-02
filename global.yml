@@ -1,1 +1,5 @@
 port: 1234 # server port
+
+configDir: './config/'
+
+outputDir: './tmp/'

@@ -1,2 +1,2 @@
-declare function startServ(): void;
-export default startServ;
+export declare function startServ(): void;
+export declare function stopServ(): void;

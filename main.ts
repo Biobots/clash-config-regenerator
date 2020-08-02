@@ -1,4 +1,4 @@
 
-import startServ from './index'
+import {startServ} from './index'
 
-startServ()
+startServ();

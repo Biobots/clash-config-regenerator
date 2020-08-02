@@ -36,18 +36,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.stopServ = exports.startServ = void 0;
 var express = require("express");
-var fs = require("fs");
-var mime = require("mime");
 var global_1 = require("./utils/global");
 var user_1 = require("./utils/user");
 var parser_1 = require("./utils/parser");
+var app = express();
+var server;
+global_1.Config.load();
 function startServ() {
-    var app = express();
-    global_1.Config.load();
-    app.get('/:id', function (req, res) {
+    app.get('/clash/:id', function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, user, file;
+            var id, user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -56,18 +56,24 @@ function startServ() {
                     case 1:
                         user = _a.sent();
                         user.generateDoc();
-                        file = './tmp/' + id + '_output.yml';
-                        fs.writeFileSync(file, parser_1.dumpFile(user), 'utf-8');
-                        res.writeHead(200, { 'Content-type': mime.getType(file), "Content-Disposition": 'attachment; filename=out.yml' });
-                        fs.createReadStream(file).pipe(res);
+                        res.writeHead(200, { 'Content-type': 'text/yaml', "Content-Disposition": 'attachment; filename=out.yml' });
+                        res.write(parser_1.dumpFile(user));
+                        res.end();
                         return [2 /*return*/];
                 }
             });
         });
     });
-    app.listen(global_1.Config.port, function () {
+    server = app.listen(global_1.Config.port, function () {
         console.log('running at ' + global_1.Config.port);
     });
 }
-exports.default = startServ;
-exports = module.exports = startServ;
+exports.startServ = startServ;
+function stopServ() {
+    server.close(function (err) { console.log(err); process.exit(1); });
+    console.log('stopped');
+    process.exit(0);
+}
+exports.stopServ = stopServ;
+module.exports.start = startServ;
+module.exports.stop = stopServ;

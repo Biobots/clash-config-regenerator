@@ -58,6 +58,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUser = exports.User = void 0;
 var yaml = require("js-yaml");
 var fs = require("fs");
+var path = require("path");
+var global_1 = require("./global");
 var Parser = __importStar(require("./parser"));
 var User = /** @class */ (function () {
     function User(id) {
@@ -71,7 +73,7 @@ var User = /** @class */ (function () {
             rules: []
         };
         try {
-            this.config = yaml.safeLoad(fs.readFileSync('./config/' + id + '.yml', 'utf-8'));
+            this.config = yaml.safeLoad(fs.readFileSync(path.join(global_1.Config.configDir, id + '.yml'), 'utf-8'));
             this.header = fs.readFileSync(this.config.header, 'utf-8');
         }
         catch (error) {

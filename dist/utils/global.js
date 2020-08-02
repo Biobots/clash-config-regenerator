@@ -10,6 +10,8 @@ var Config = /** @class */ (function () {
         try {
             var config = yaml.safeLoad(fs.readFileSync('global.yml', 'utf-8'));
             this.port = config.port;
+            this.configDir = config.configDir;
+            this.outputDir = config.outputDir;
         }
         catch (error) {
             console.log(error);

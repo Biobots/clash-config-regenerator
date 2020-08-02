@@ -1,8 +1,8 @@
 import yaml = require('js-yaml');
 import fs = require('fs');
-import Axios, { AxiosResponse } from 'axios';
+import path = require('path')
+import {Config} from './global'
 import * as Proxy from './proxy'
-import * as Net from './network'
 import * as Parser from './parser'
 import * as Rule from './rule'
 
@@ -23,7 +23,7 @@ export class User {
 
 	constructor(id:string) {
 		try {
-			this.config = yaml.safeLoad(fs.readFileSync('./config/'+id+'.yml', 'utf-8'));
+			this.config = yaml.safeLoad(fs.readFileSync(path.join(Config.configDir, id+'.yml'), 'utf-8'));
 			this.header = fs.readFileSync(this.config.header, 'utf-8');
 			
 		} catch (error) {

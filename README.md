@@ -22,7 +22,7 @@ npm install
 npm start
 ```
 
-If your config file under `config/` is called `a.yml` and your server port is `1111`, then `http://localhost:1111/a` should return your config file.
+If your config file under `config/` is called `a.yml` and your server port is `1111`, then `http://localhost:1111/clash/a` should return your config file.
 
 Mutiple users are supported.
 

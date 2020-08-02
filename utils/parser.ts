@@ -1,4 +1,3 @@
-import Axios, { AxiosResponse } from 'axios';
 import yaml = require('js-yaml');
 import fs = require('fs');
 import * as Proxy from './proxy'

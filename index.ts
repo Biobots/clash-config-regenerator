@@ -1,27 +1,35 @@
 import express = require('express');
 import fs = require('fs');
 import mime = require('mime');
+import http = require('http');
+import path = require('path');
 import {Config} from './utils/global'
 import {User, getUser} from './utils/user'
 import { dumpFile } from './utils/parser';
 
-function startServ() {
-	const app:express.Application = express();
-	Config.load();
+const app:express.Application = express();
+let server:http.Server;
+Config.load();
 
-	app.get('/:id', async function(req:express.Request, res:express.Response) {
+export function startServ() {
+	app.get('/clash/:id', async function(req:express.Request, res:express.Response) {
 		let id:string = req.params.id
 		let user:User = await getUser(id);
 		user.generateDoc();
-		let file:string = './tmp/'+id+'_output.yml'
-		fs.writeFileSync(file, dumpFile(user), 'utf-8')
-		res.writeHead(200, {'Content-type':<string>mime.getType(file), "Content-Disposition": 'attachment; filename=out.yml'});
-		fs.createReadStream(file).pipe(res);
+		res.writeHead(200, {'Content-type': 'text/yaml', "Content-Disposition": 'attachment; filename=out.yml'});
+		res.write(dumpFile(user))
+		res.end()
 	});
-	app.listen(Config.port, function() {
+	server = app.listen(Config.port, function() {
 		console.log('running at ' + Config.port);
 	});
 }
 
-export default startServ;
-exports = module.exports = startServ;
+export function stopServ() {
+	server.close(err => { console.log(err); process.exit(1);});
+	console.log('stopped');
+	process.exit(0);
+}
+
+module.exports.start = startServ;
+module.exports.stop = stopServ;
