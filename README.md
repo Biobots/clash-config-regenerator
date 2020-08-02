@@ -31,8 +31,7 @@ Mutiple users are supported.
 Add `global.yml` to `./` and use:
 
 ```js
-let generator_server = require('clash-config-regenerator')
-generator_server()
+let ccr = require('clash-config-regenerator')
+ccr.startServ() //start server
+ccr.stopServ() //stop server
 ```
-
-to start the server.
