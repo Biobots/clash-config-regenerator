@@ -1,6 +1,6 @@
 {
  "name": "clash-config-regenerator",
- "version": "0.0.5",
+ "version": "0.0.6",
  "description": "Regenerate clash config file via subscriptions and rule providers.",
  "main": "./dist/index.js",
  "author": "biobot",
