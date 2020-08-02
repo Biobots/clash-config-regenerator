@@ -42,28 +42,32 @@ var mime = require("mime");
 var global_1 = require("./utils/global");
 var user_1 = require("./utils/user");
 var parser_1 = require("./utils/parser");
-var app = express();
-global_1.Config.load();
-app.get('/:id', function (req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var id, user, file;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    id = req.params.id;
-                    return [4 /*yield*/, user_1.getUser(id)];
-                case 1:
-                    user = _a.sent();
-                    user.generateDoc();
-                    file = './tmp/' + id + '_output.yml';
-                    fs.writeFileSync(file, parser_1.dumpFile(user), 'utf-8');
-                    res.writeHead(200, { 'Content-type': mime.getType(file), "Content-Disposition": 'attachment; filename=out.yml' });
-                    fs.createReadStream(file).pipe(res);
-                    return [2 /*return*/];
-            }
+function startServ() {
+    var app = express();
+    global_1.Config.load();
+    app.get('/:id', function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, user, file;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = req.params.id;
+                        return [4 /*yield*/, user_1.getUser(id)];
+                    case 1:
+                        user = _a.sent();
+                        user.generateDoc();
+                        file = './tmp/' + id + '_output.yml';
+                        fs.writeFileSync(file, parser_1.dumpFile(user), 'utf-8');
+                        res.writeHead(200, { 'Content-type': mime.getType(file), "Content-Disposition": 'attachment; filename=out.yml' });
+                        fs.createReadStream(file).pipe(res);
+                        return [2 /*return*/];
+                }
+            });
         });
     });
-});
-app.listen(global_1.Config.port, function () {
-    console.log('running at ' + global_1.Config.port);
-});
+    app.listen(global_1.Config.port, function () {
+        console.log('running at ' + global_1.Config.port);
+    });
+}
+exports.default = startServ;
+exports = module.exports = startServ;

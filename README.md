@@ -5,7 +5,7 @@
 ## Usage
 
 ```bash
-git clone git@github.com:Biobots/clash-config-regenerator.git
+git clone https://github.com/Biobots/clash-config-regenerator.git
 ```
 
 Modify `global.yml`, `config_sample.yml` and `header_sample.yml`. Copy your config file to `./config` folder, rename it to your user name.
@@ -25,3 +25,14 @@ npm start
 If your config file under `config/` is called `a.yml` and your server port is `1111`, then `http://localhost:1111/a` should return your config file.
 
 Mutiple users are supported.
+
+## Use as a package
+
+Add `global.yml` to `./` and use:
+
+```js
+let generator_server = require('clash-config-regenerator')
+generator_server()
+```
+
+to start the server.
