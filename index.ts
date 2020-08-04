@@ -13,12 +13,18 @@ Config.load();
 
 export function startServ() {
 	app.get('/clash/:id', async function(req:express.Request, res:express.Response) {
-		let id:string = req.params.id
-		let user:User = await getUser(id);
-		user.generateDoc();
-		res.writeHead(200, {'Content-type': 'text/yaml', "Content-Disposition": 'attachment; filename=out.yml'});
-		res.write(dumpFile(user))
-		res.end()
+		try {
+			let id:string = req.params.id
+			let user:User = await getUser(id);
+			user.generateDoc();
+			res.writeHead(200, {'Content-type': 'text/yaml', "Content-Disposition": 'attachment; filename=out.yml'});
+			res.write(dumpFile(user));
+			res.end();
+		} catch(err) {
+			res.writeHead(200);
+			res.write(err);
+			res.end();
+		}
 	});
 	server = app.listen(Config.port, function() {
 		console.log('running at ' + Config.port);
