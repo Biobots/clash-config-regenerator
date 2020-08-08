@@ -69,12 +69,15 @@ export async function buildRuleGroups(usr:User) {
 	usr.rules = await Promise.all(
 		usr.config.rule.map(
 			async (r: any) => {
-				let rst = await Net.getUrls(r.url);
-				let payload = rst.map(item => item.data)
-					.map(doc => <any>yaml.safeLoad(doc))
-					.map(obj => <any[]>obj.payload)
-					.map(raw => raw.map((s: string) => new Rule(s)))
-					.reduce((all, cur) => all.concat(cur));
+				let payload:Array<Rule> = [];
+				if (!(typeof (r.url) == 'undefined' || r.url == null)) {
+					let rst = await Net.getUrls(r.url);
+					payload = rst.map(item => item.data)
+						.map(doc => <any>yaml.safeLoad(doc))
+						.map(obj => <any[]>obj.payload)
+						.map(raw => raw.map((s: string) => new Rule(s)))
+						.reduce((all, cur) => all.concat(cur));
+				}
 				if (!(typeof (r.extra) == 'undefined' || r.extra == null)) {
 					payload = payload.concat(r.extra.map((record: string) => new Rule(record)));
 				}

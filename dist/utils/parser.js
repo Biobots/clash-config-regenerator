@@ -140,10 +140,13 @@ function buildRuleGroups(usr) {
                 case 0:
                     _a = usr;
                     return [4 /*yield*/, Promise.all(usr.config.rule.map(function (r) { return __awaiter(_this, void 0, void 0, function () {
-                            var rst, payload;
+                            var payload, rst;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
-                                    case 0: return [4 /*yield*/, Net.getUrls(r.url)];
+                                    case 0:
+                                        payload = [];
+                                        if (!!(typeof (r.url) == 'undefined' || r.url == null)) return [3 /*break*/, 2];
+                                        return [4 /*yield*/, Net.getUrls(r.url)];
                                     case 1:
                                         rst = _a.sent();
                                         payload = rst.map(function (item) { return item.data; })
@@ -151,6 +154,8 @@ function buildRuleGroups(usr) {
                                             .map(function (obj) { return obj.payload; })
                                             .map(function (raw) { return raw.map(function (s) { return new rule_1.Rule(s); }); })
                                             .reduce(function (all, cur) { return all.concat(cur); });
+                                        _a.label = 2;
+                                    case 2:
                                         if (!(typeof (r.extra) == 'undefined' || r.extra == null)) {
                                             payload = payload.concat(r.extra.map(function (record) { return new rule_1.Rule(record); }));
                                         }
