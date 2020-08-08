@@ -37,7 +37,7 @@ export class User {
 		this.groups.forEach(g => {
 			if (g.keywords!=null)
 			{
-				let keywords = g.keywords.split(' ');
+				let keywords = g.keywords.map(k => k.split(' '));
 				g.proxies = Parser.filterProxy(keywords, this.proxies);
 			}
 		})

@@ -86,7 +86,7 @@ var User = /** @class */ (function () {
         this.groups = Parser.parseProxyGroups(this.config.groups);
         this.groups.forEach(function (g) {
             if (g.keywords != null) {
-                var keywords = g.keywords.split(' ');
+                var keywords = g.keywords.map(function (k) { return k.split(' '); });
                 g.proxies = Parser.filterProxy(keywords, _this.proxies);
             }
         });

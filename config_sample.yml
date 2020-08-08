@@ -69,21 +69,21 @@ rule: # rule providers
     url:
       - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/LocalAreaNetwork.yaml
 
-groups: # proxy groups
+groups: #proxy groups
   - name: PROXY
     keywords: 
     type: select
-    subgroup: [hk, us, jp, tw, DIRECT, REJECT]
+    subgroup: [hk, sg, us, jp, tw, DIRECT, REJECT]
 
   - name: Lite
     keywords: 
     type: select
-    subgroup: [hk, us, jp, tw, DIRECT, REJECT]
+    subgroup: [hk, sg, us, jp, tw, DIRECT, REJECT]
 
   - name: Apple
     keywords: 
     type: select
-    subgroup: [hk, us, jp, tw, DIRECT, REJECT]
+    subgroup: [hk, sg, us, jp, tw, DIRECT, REJECT]
 
   - name: Bahamut
     keywords: 
@@ -93,7 +93,7 @@ groups: # proxy groups
   - name: Steam-CN
     keywords: 
     type: select
-    subgroup: [DIRECT, hk, us, jp, tw, REJECT]
+    subgroup: [DIRECT, hk, sg, us, jp, tw, REJECT]
 
   - name: BLOCK
     keywords: 
@@ -116,28 +116,40 @@ groups: # proxy groups
     subgroup: [DIRECT, REJECT]
 
   - name: hk
-    keywords: 香港
+    keywords: # and
+      - 香港 hk HK # or
     type: urltest
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
     subgroup: []
 
   - name: us
-    keywords: 美国
+    keywords:
+      - 美国 us US
     type: urltest
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
     subgroup: []
 
   - name: jp
-    keywords: 日本
+    keywords:
+      - 日本 jp JP
     type: urltest
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
     subgroup: []
 
   - name: tw
-    keywords: 台湾
+    keywords:
+      - 台湾 tw TW
+    type: urltest
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    subgroup: []
+
+  - name: sg
+    keywords:
+      - 新加坡 sg SG
     type: urltest
     url: 'http://www.gstatic.com/generate_204'
     interval: 300

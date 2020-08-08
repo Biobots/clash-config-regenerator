@@ -16,7 +16,7 @@ export declare enum ProxyGroupType {
 export declare abstract class BaseProxyGroup {
     name: string;
     type: ProxyGroupType;
-    keywords: string;
+    keywords: Array<string>;
     proxies: Array<BaseProxy>;
     subgroup: Array<string>;
     raw: any;

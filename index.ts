@@ -21,9 +21,10 @@ export function startServ() {
 			res.write(dumpFile(user));
 			res.end();
 		} catch(err) {
-			res.writeHead(200);
-			res.write(err);
-			res.end();
+			console.log(err);
+			//res.writeHead(200);
+			//res.write(err);
+			//res.end();
 		}
 	});
 	server = app.listen(Config.port, function() {

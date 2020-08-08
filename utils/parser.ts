@@ -84,11 +84,12 @@ export async function buildRuleGroups(usr:User) {
 	)
 }
 
-export function filterProxy(keys:string[], proxies:Proxy.BaseProxy[]) {
+export function filterProxy(keys:Array<string[]>, proxies:Proxy.BaseProxy[]) {
 	let output = proxies;
-	keys.forEach(k => {
-		output = output.filter(proxy => proxy.name.includes(k));
-	});
+	//keys.forEach(k => {
+	//	output = output.filter(proxy => proxy.name.includes(k));
+	//});
+	output = output.filter(proxy => keys.every(k => k.some(kk => proxy.name.includes(kk))))
 	return output;
 }
 

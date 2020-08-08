@@ -63,9 +63,7 @@ function startServ() {
                         return [3 /*break*/, 3];
                     case 2:
                         err_1 = _a.sent();
-                        res.writeHead(200);
-                        res.write(err_1);
-                        res.end();
+                        console.log(err_1);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
