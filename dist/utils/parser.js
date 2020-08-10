@@ -173,9 +173,6 @@ function buildRuleGroups(usr) {
 exports.buildRuleGroups = buildRuleGroups;
 function filterProxy(keys, proxies) {
     var output = proxies;
-    //keys.forEach(k => {
-    //	output = output.filter(proxy => proxy.name.includes(k));
-    //});
     output = output.filter(function (proxy) { return keys.every(function (k) { return k.some(function (kk) { return proxy.name.includes(kk); }); }); });
     return output;
 }

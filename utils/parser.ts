@@ -1,5 +1,4 @@
 import yaml = require('js-yaml');
-import fs = require('fs');
 import * as Proxy from './proxy'
 import * as Net from './network'
 import { User } from './user';
@@ -89,9 +88,6 @@ export async function buildRuleGroups(usr:User) {
 
 export function filterProxy(keys:Array<string[]>, proxies:Proxy.BaseProxy[]) {
 	let output = proxies;
-	//keys.forEach(k => {
-	//	output = output.filter(proxy => proxy.name.includes(k));
-	//});
 	output = output.filter(proxy => keys.every(k => k.some(kk => proxy.name.includes(kk))))
 	return output;
 }

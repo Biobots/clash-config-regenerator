@@ -1,8 +1,5 @@
 import express = require('express');
-import fs = require('fs');
-import mime = require('mime');
 import http = require('http');
-import path = require('path');
 import {Config} from './utils/global'
 import {User, getUser} from './utils/user'
 import { dumpFile } from './utils/parser';
@@ -22,9 +19,9 @@ export function startServ() {
 			res.end();
 		} catch(err) {
 			console.log(err);
-			//res.writeHead(200);
-			//res.write(err);
-			//res.end();
+			res.writeHead(200);
+			res.write(err);
+			res.end();
 		}
 	});
 	server = app.listen(Config.port, function() {
