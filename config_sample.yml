@@ -8,21 +8,21 @@ sub: # clash subscriptions
 
 proxy: # single proxies
   - name: proxy1
-      type: vmess
-      server: xxxx
-      port: 1111
-      uuid: uuid
-      alterId: x
-      cipher: auto
-      udp: true
+    type: vmess
+    server: xxxx
+    port: 1111
+    uuid: uuid
+    alterId: x
+    cipher: auto
+    udp: true
   - name: proxy2
-      type: vmess
-      server: xxxx
-      port: 1111
-      uuid: uuid
-      alterId: x
-      cipher: auto
-      udp: true
+    type: vmess
+    server: xxxx
+    port: 1111
+    uuid: uuid
+    alterId: x
+    cipher: auto
+    udp: true
 
 rule: # rule providers
   - name: PROXY

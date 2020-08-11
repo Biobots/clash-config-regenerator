@@ -60,8 +60,9 @@ var yaml = require("js-yaml");
 var Proxy = __importStar(require("./proxy"));
 var Net = __importStar(require("./network"));
 var rule_1 = require("./rule");
+var utils_1 = require("./utils");
 function parseProxies(proxies) {
-    if (typeof (proxies) == 'undefined' || proxies == null)
+    if (!utils_1.check(proxies))
         return [];
     var rst = proxies
         .map(function (item) {
@@ -145,7 +146,7 @@ function buildRuleGroups(usr) {
                                 switch (_a.label) {
                                     case 0:
                                         payload = [];
-                                        if (!!(typeof (r.url) == 'undefined' || r.url == null)) return [3 /*break*/, 2];
+                                        if (!utils_1.check(r.url)) return [3 /*break*/, 2];
                                         return [4 /*yield*/, Net.getUrls(r.url)];
                                     case 1:
                                         rst = _a.sent();
@@ -156,7 +157,7 @@ function buildRuleGroups(usr) {
                                             .reduce(function (all, cur) { return all.concat(cur); });
                                         _a.label = 2;
                                     case 2:
-                                        if (!(typeof (r.extra) == 'undefined' || r.extra == null)) {
+                                        if (utils_1.check(r.extra)) {
                                             payload = payload.concat(r.extra.map(function (record) { return new rule_1.Rule(record); }));
                                         }
                                         return [2 /*return*/, new rule_1.RuleGroup(r.name, r.prior, payload)];

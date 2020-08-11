@@ -3,9 +3,10 @@ import * as Proxy from './proxy'
 import * as Net from './network'
 import { User } from './user';
 import { Rule, RuleGroup } from './rule';
+import { check } from './utils';
 
 export function parseProxies(proxies:Array<any>): Array<Proxy.BaseProxy> {
-	if (typeof(proxies)=='undefined' || proxies == null) return [];
+	if (!check(proxies)) return [];
 	let rst:Array<Proxy.BaseProxy> = proxies
 		.map((item) => {
 			var p:Proxy.BaseProxy;
@@ -69,7 +70,7 @@ export async function buildRuleGroups(usr:User) {
 		usr.config.rule.map(
 			async (r: any) => {
 				let payload:Array<Rule> = [];
-				if (!(typeof (r.url) == 'undefined' || r.url == null)) {
+				if (check(r.url)) {
 					let rst = await Net.getUrls(r.url);
 					payload = rst.map(item => item.data)
 						.map(doc => <any>yaml.safeLoad(doc))
@@ -77,7 +78,7 @@ export async function buildRuleGroups(usr:User) {
 						.map(raw => raw.map((s: string) => new Rule(s)))
 						.reduce((all, cur) => all.concat(cur));
 				}
-				if (!(typeof (r.extra) == 'undefined' || r.extra == null)) {
+				if (check(r.extra)) {
 					payload = payload.concat(r.extra.map((record: string) => new Rule(record)));
 				}
 				return new RuleGroup(r.name, r.prior, payload);

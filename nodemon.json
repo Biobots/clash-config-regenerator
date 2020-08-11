@@ -1,7 +1,8 @@
 {
 	"verbose": false,
 	"debug": true,
-	"exec": "ts-node ./index.ts",
-	"watch": ["./utils/", "./", "./config/"],
-	"ext": "ts"
+	"exec": "yarn compile",
+	"watch": ["./utils/", "./routes/", "./"],
+	"ignore": ["./dist/"],
+	"ext": "ts, yml, yaml, json"
 }
