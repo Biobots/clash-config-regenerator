@@ -46,6 +46,15 @@ export function parseProxyGroups(proxyGroups:Array<any>): Array<Proxy.BaseProxyG
 				case 'urltest':
 					p = new Proxy.UrlTestProxyGroup(item);
 					break;
+				case 'loadbalance':
+					p = new Proxy.LoadBalanceProxyGroup(item);
+					break;
+				case 'relay':
+					p = new Proxy.RelayProxyGroup(item);
+					break;
+				case 'fallback':
+					p = new Proxy.FallbackProxyGroup(item);
+					break;
 				default:
 					p = new Proxy.SelectProxyGroup(item);
 					break;

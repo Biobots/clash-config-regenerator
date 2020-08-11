@@ -12,7 +12,10 @@ export enum ProxyType {
 export enum ProxyGroupType {
 	Base,
 	Select,
-	UrlTest
+	UrlTest,
+	Fallback,
+	LoadBalance,
+	Relay
 }
 
 export abstract class BaseProxyGroup {
@@ -69,6 +72,66 @@ export class UrlTestProxyGroup extends BaseProxyGroup {
 			type:'url-test',
 			url:this.url,
 			interval:this.interval,
+			proxies:this.subgroup.concat(this.proxies.map(p => p.name))
+		};
+	}
+}
+
+export class LoadBalanceProxyGroup extends BaseProxyGroup {
+	url:string
+	interval:number
+
+	constructor(raw:any) {
+		super(raw);
+		this.type = ProxyGroupType.LoadBalance;
+		this.url = raw.url;
+		this.interval = raw.interval;
+	}
+
+	getRaw(): any{
+		return {
+			name:this.name,
+			type:'load-balance',
+			url:this.url,
+			interval:this.interval,
+			proxies:this.subgroup.concat(this.proxies.map(p => p.name))
+		};
+	}
+}
+
+export class FallbackProxyGroup extends BaseProxyGroup {
+	url:string
+	interval:number
+
+	constructor(raw:any) {
+		super(raw);
+		this.type = ProxyGroupType.Fallback;
+		this.url = raw.url;
+		this.interval = raw.interval;
+	}
+
+	getRaw(): any{
+		return {
+			name:this.name,
+			type:'fallback',
+			url:this.url,
+			interval:this.interval,
+			proxies:this.subgroup.concat(this.proxies.map(p => p.name))
+		};
+	}
+}
+
+export class RelayProxyGroup extends BaseProxyGroup {
+
+	constructor(raw:any) {
+		super(raw);
+		this.type = ProxyGroupType.Relay;
+	}
+
+	getRaw(): any{
+		return {
+			name:this.name,
+			type:'relay',
 			proxies:this.subgroup.concat(this.proxies.map(p => p.name))
 		};
 	}

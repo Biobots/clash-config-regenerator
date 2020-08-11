@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Trojan = exports.Http = exports.Socks5 = exports.Shadowsocks = exports.Vmess = exports.BaseProxy = exports.UrlTestProxyGroup = exports.SelectProxyGroup = exports.BaseProxyGroup = exports.ProxyGroupType = exports.ProxyType = void 0;
+exports.Trojan = exports.Http = exports.Socks5 = exports.Shadowsocks = exports.Vmess = exports.BaseProxy = exports.RelayProxyGroup = exports.FallbackProxyGroup = exports.LoadBalanceProxyGroup = exports.UrlTestProxyGroup = exports.SelectProxyGroup = exports.BaseProxyGroup = exports.ProxyGroupType = exports.ProxyType = void 0;
 var ProxyType;
 (function (ProxyType) {
     ProxyType[ProxyType["Base"] = 0] = "Base";
@@ -30,6 +30,9 @@ var ProxyGroupType;
     ProxyGroupType[ProxyGroupType["Base"] = 0] = "Base";
     ProxyGroupType[ProxyGroupType["Select"] = 1] = "Select";
     ProxyGroupType[ProxyGroupType["UrlTest"] = 2] = "UrlTest";
+    ProxyGroupType[ProxyGroupType["Fallback"] = 3] = "Fallback";
+    ProxyGroupType[ProxyGroupType["LoadBalance"] = 4] = "LoadBalance";
+    ProxyGroupType[ProxyGroupType["Relay"] = 5] = "Relay";
 })(ProxyGroupType = exports.ProxyGroupType || (exports.ProxyGroupType = {}));
 var BaseProxyGroup = /** @class */ (function () {
     function BaseProxyGroup(raw) {
@@ -83,6 +86,65 @@ var UrlTestProxyGroup = /** @class */ (function (_super) {
     return UrlTestProxyGroup;
 }(BaseProxyGroup));
 exports.UrlTestProxyGroup = UrlTestProxyGroup;
+var LoadBalanceProxyGroup = /** @class */ (function (_super) {
+    __extends(LoadBalanceProxyGroup, _super);
+    function LoadBalanceProxyGroup(raw) {
+        var _this = _super.call(this, raw) || this;
+        _this.type = ProxyGroupType.LoadBalance;
+        _this.url = raw.url;
+        _this.interval = raw.interval;
+        return _this;
+    }
+    LoadBalanceProxyGroup.prototype.getRaw = function () {
+        return {
+            name: this.name,
+            type: 'load-balance',
+            url: this.url,
+            interval: this.interval,
+            proxies: this.subgroup.concat(this.proxies.map(function (p) { return p.name; }))
+        };
+    };
+    return LoadBalanceProxyGroup;
+}(BaseProxyGroup));
+exports.LoadBalanceProxyGroup = LoadBalanceProxyGroup;
+var FallbackProxyGroup = /** @class */ (function (_super) {
+    __extends(FallbackProxyGroup, _super);
+    function FallbackProxyGroup(raw) {
+        var _this = _super.call(this, raw) || this;
+        _this.type = ProxyGroupType.Fallback;
+        _this.url = raw.url;
+        _this.interval = raw.interval;
+        return _this;
+    }
+    FallbackProxyGroup.prototype.getRaw = function () {
+        return {
+            name: this.name,
+            type: 'fallback',
+            url: this.url,
+            interval: this.interval,
+            proxies: this.subgroup.concat(this.proxies.map(function (p) { return p.name; }))
+        };
+    };
+    return FallbackProxyGroup;
+}(BaseProxyGroup));
+exports.FallbackProxyGroup = FallbackProxyGroup;
+var RelayProxyGroup = /** @class */ (function (_super) {
+    __extends(RelayProxyGroup, _super);
+    function RelayProxyGroup(raw) {
+        var _this = _super.call(this, raw) || this;
+        _this.type = ProxyGroupType.Relay;
+        return _this;
+    }
+    RelayProxyGroup.prototype.getRaw = function () {
+        return {
+            name: this.name,
+            type: 'relay',
+            proxies: this.subgroup.concat(this.proxies.map(function (p) { return p.name; }))
+        };
+    };
+    return RelayProxyGroup;
+}(BaseProxyGroup));
+exports.RelayProxyGroup = RelayProxyGroup;
 var BaseProxy = /** @class */ (function () {
     function BaseProxy(raw) {
         this.name = raw.name;

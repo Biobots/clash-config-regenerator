@@ -11,7 +11,10 @@ export declare enum ProxyType {
 export declare enum ProxyGroupType {
     Base = 0,
     Select = 1,
-    UrlTest = 2
+    UrlTest = 2,
+    Fallback = 3,
+    LoadBalance = 4,
+    Relay = 5
 }
 export declare abstract class BaseProxyGroup {
     name: string;
@@ -30,6 +33,22 @@ export declare class SelectProxyGroup extends BaseProxyGroup {
 export declare class UrlTestProxyGroup extends BaseProxyGroup {
     url: string;
     interval: number;
+    constructor(raw: any);
+    getRaw(): any;
+}
+export declare class LoadBalanceProxyGroup extends BaseProxyGroup {
+    url: string;
+    interval: number;
+    constructor(raw: any);
+    getRaw(): any;
+}
+export declare class FallbackProxyGroup extends BaseProxyGroup {
+    url: string;
+    interval: number;
+    constructor(raw: any);
+    getRaw(): any;
+}
+export declare class RelayProxyGroup extends BaseProxyGroup {
     constructor(raw: any);
     getRaw(): any;
 }
